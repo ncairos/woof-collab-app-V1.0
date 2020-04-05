@@ -32,7 +32,7 @@ function LoginForm(props) {
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(() => {
-            navigation.navigate("Home");
+            navigation.navigate("Account");
           })
           .catch(() => {
             toastRef.current.show("Incorrect email or password");

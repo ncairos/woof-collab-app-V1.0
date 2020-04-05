@@ -19,6 +19,8 @@ function SignupForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRep, setPasswordRep] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   //----------FIX THE NAVIGATION AFTER SIGNUP----------//
 
@@ -36,7 +38,10 @@ function SignupForm(props) {
           await firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
-            .then(() => {
+            .then(userCredentials => {
+              userCredentials.user.updateProfile({
+                displayName: displayName
+              });
               navigation.navigate("Search");
             })
             .catch(error => {
@@ -92,6 +97,18 @@ function SignupForm(props) {
             name={hideRepPassword ? "lock" : "lock-open"}
             iconStyle={styles.icon}
             onPress={() => setHideRepPassword(!hideRepPassword)}
+          />
+        }
+      />
+      <Input
+        placeholder="Full Name"
+        containerStyle={styles.input}
+        onChange={elm => setDisplayName(elm.nativeEvent.text)}
+        leftIcon={
+          <Icon
+            type="material-community"
+            name="account-circle"
+            iconStyle={styles.icon}
           />
         }
       />

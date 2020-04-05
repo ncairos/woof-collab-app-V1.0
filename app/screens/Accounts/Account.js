@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { Button, Image } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 
-import Loading from '../../components/Loading'
+import Loading from "../../components/Loading";
 import LoggedPage from "./LoggedPage";
 
 import * as firebase from "firebase";
@@ -46,7 +46,7 @@ function Account(props) {
         style={styles.textCenter}
         onPress={() => console.log("center login")}
       >
-        ¿Are you a center?
+        ¡Be a part of our woof family!
       </Text>
     </View>
   );
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   textCenter: {
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 50,
     fontSize: 16
   }
 });
