@@ -1,6 +1,6 @@
 import firebase from "firebase/app";
 
-const firebaseConfig = {
+var firebaseConfig = {
   apiKey: "AIzaSyA-t_T-fkosf-unQ78cvzcSw4M1ki7WB64",
   authDomain: "woof-collab.firebaseapp.com",
   databaseURL: "https://woof-collab.firebaseio.com",

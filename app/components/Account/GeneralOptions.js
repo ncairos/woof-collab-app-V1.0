@@ -3,6 +3,9 @@ import { StyleSheet, View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 
 import ChangeNameForm from "./ChangeNameForm";
+import ChangeEmailForm from "./ChangeEmailForm";
+import ChangePasswordForm from "./ChangePasswordForm";
+import ChangePhoneForm from "./ChangePhoneForm";
 import Modal from "../Modal";
 
 export default function GeneralOptions(props) {
@@ -27,7 +30,7 @@ export default function GeneralOptions(props) {
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => console.log("change email")
+      onPress: () => selectedComp("email")
     },
     {
       title: "Password",
@@ -36,7 +39,7 @@ export default function GeneralOptions(props) {
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => console.log("change password")
+      onPress: () => selectedComp("password")
     },
     {
       title: "Phone Number",
@@ -45,7 +48,7 @@ export default function GeneralOptions(props) {
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => console.log("change number")
+      onPress: () => selectedComp("phoneNumber")
     },
 
     {
@@ -74,6 +77,39 @@ export default function GeneralOptions(props) {
         setRenderComp(
           <ChangeNameForm
             displayName={userInfo.displayName}
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
+        setIsVisibleModal(true);
+        break;
+      case "email":
+        setRenderComp(
+          <ChangeEmailForm
+            email={userInfo.email}
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
+        setIsVisibleModal(true);
+        break;
+      case "password":
+        setRenderComp(
+          <ChangePasswordForm
+            password={userInfo.password}
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadData={setReloadData}
+            toastRef={toastRef}
+          />
+        );
+        setIsVisibleModal(true);
+        break;
+      case "phoneNumber":
+        setRenderComp(
+          <ChangePhoneForm
+            phoneNumber={userInfo.phoneNumber}
             setIsVisibleModal={setIsVisibleModal}
             setReloadData={setReloadData}
             toastRef={toastRef}

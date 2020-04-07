@@ -20,7 +20,6 @@ function SignupForm(props) {
   const [password, setPassword] = useState("");
   const [passwordRep, setPasswordRep] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
 
   //----------FIX THE NAVIGATION AFTER SIGNUP----------//
 

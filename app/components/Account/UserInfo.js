@@ -4,7 +4,7 @@ import { Avatar } from "react-native-elements";
 
 export default function UserInfo(props) {
   const {
-    userInfo: { displayName, email, photoUrl },
+    userInfo: { displayName, email, photoUrl, phoneNumber },
     setLoadingIsVisible,
     setReloadData,
     setTextLoading,
