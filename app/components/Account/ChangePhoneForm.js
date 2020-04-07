@@ -45,58 +45,28 @@ export default function ChangePhoneNumber(props) {
 
   //--------------------------------------------------------------------------------------//
 
-  //   const updatePhoneNumber = () => {
-  //     setError(null);
-  //     if (!newPhoneNumber) {
-  //       setError("errooooooor");
-  //     } else {
-  //       setLoadingIsVisible(true);
-  //       db.collection("phone")
-  //         .add({
-  //           phoneNumber: newPhoneNumber,
-  //           user: firebaseApp.auth().currentUser.uid
-  //         })
-  //         .then(() => {
-  //           setLoadingIsVisible(false);
-  //           toastRef.current.show("SUCCESSS");
-  //           setIsVisibleModal(false);
-  //         })
-  //         .catch(() => {
-  //           setLoadingIsVisible(false);
-  //           toastRef.current.show("ERRROOOR");
-  //         });
-  //     }
-  //   };
-
   const addPhoneNumber = () => {
-    console.log(firebase.auth().currentUser.uid);
-    console.log(newPhoneNumber);
-
+    setError(null);
     if (!newPhoneNumber) {
-      toastRef.current.show("Phone Number has not been change");
+      setError("Phone Number has not been change");
     } else {
-      //   setLoadingIsVisible(true);
-      //   const user = firebase.auth().currentUser;
-      //   let payload = {
-      //     userId: user.uid,
-      //     phone: newPhoneNumber
-      //   };
-      //   db.collection("contacts")
-      //     .add(payload)
-      //     .then(() => setLoadingIsVisible(false));
-
-      db.collection("cities")
-        .doc("LA")
-        .set({
-          name: "Los Angeles",
-          state: "CA",
-          country: "USA"
+      setLoadingIsVisible(true);
+      const user = firebase.auth().currentUser;
+      let payload = {
+        userId: user.uid,
+        phone: newPhoneNumber,
+        createdAt: new Date()
+      };
+      db.collection("contacts")
+        .add(payload)
+        .then(() => {
+          setLoadingIsVisible(false);
+          toastRef.current.show("Phone Number has been updated");
+          setIsVisibleModal(false);
         })
-        .then(function() {
-          console.log("Document successfully written!");
-        })
-        .catch(function(error) {
-          console.error("Error writing document: ", error);
+        .catch(() => {
+          setLoadingIsVisible(false);
+          toastRef.current.show("Error updating, Try Again Later!");
         });
     }
   };
@@ -104,9 +74,10 @@ export default function ChangePhoneNumber(props) {
   return (
     <View>
       <Input
-        placeholder="Phone Number"
+        placeholder="+00-000-000-000"
         defaultValue={newPhoneNumber && newPhoneNumber}
         onChange={elm => setNewPhoneNumber(elm.nativeEvent.text)}
+        keyboardType="numeric"
         label="Phone Number:"
         rightIcon={{
           type: "material-community",
