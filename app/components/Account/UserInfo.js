@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Avatar } from "react-native-elements";
+import Flag from "react-native-flags";
 
 import { firebaseApp } from "../../utils/Firebase";
 import firebase from "firebase/app";
@@ -10,51 +11,22 @@ const db = firebase.firestore(firebaseApp);
 export default function UserInfo(props) {
   const {
     userInfo: { displayName, email, photoUrl },
+    phone,
     setLoadingIsVisible,
     setReloadData,
     setTextLoading,
-    toastRef
+    toastRef,
   } = props;
 
   const [loggedUser, setLoggedUser] = useState(false);
 
-  firebase.auth().onAuthStateChanged(user => {
+  firebase.auth().onAuthStateChanged((user) => {
     user ? setLoggedUser(true) : setLoggedUser(false);
   });
 
-  // useEffect(() => {
-  //   const userId = firebase.auth().currentUser.uid;
-  //   const docRef = db.collection("phone")
-  //   console.log(userId);
-
-  //   // docRef
-  //   //   .get()
-  //   //   .then(function(doc) {
-  //   //     if (doc.exists) {
-  //   //       console.log("Document data:", doc.data());
-  //   //     } else {
-  //   //       // doc.data() will be undefined in this case
-  //   //       console.log("No such document!");
-  //   //     }
-  //   //   })
-  //   //   .catch(function(error) {
-  //   //     console.log("Error getting document:", error);
-  //   //   });
-  //   docRef
-  //     // .where("userId", "==", userId)
-  //     .get()
-  //     .then(function(doc) {
-  //       if (doc.exists) {
-  //         console.log("Document data:", doc.data());
-  //       } else {
-  //         // doc.data() will be undefined in this case
-  //         console.log("No such document!");
-  //       }
-  //     })
-  //     .catch(function(error) {
-  //       console.log("Error getting document:", error);
-  //     });
-  // }, []);
+  let str = phone.toString();
+  let chuncks = str.replace(/^(\d{3})(\d{3})/, "$1-$2-");
+  // console.log(chuncks);
 
   return (
     <View style={styles.viewMain}>
@@ -64,7 +36,7 @@ export default function UserInfo(props) {
         size="large"
         containerStyle={{ marginRight: 25 }}
         source={{
-          uri: "https://api.adorable.io/avatars/285/abott@adorable.png"
+          uri: "https://api.adorable.io/avatars/285/abott@adorable.png",
         }}
       />
       <View>
@@ -72,7 +44,10 @@ export default function UserInfo(props) {
           {displayName ? displayName : "Anonymous"}
         </Text>
         <Text style={{ color: "#6b7a8f" }}>{email}</Text>
-        <Text style={{ color: "#6b7a8f" }}>aqui va el telefono</Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Flag code="ES" size={24} />
+          <Text style={{ color: "#6b7a8f" }}> +34 {chuncks}</Text>
+        </View>
       </View>
     </View>
   );
@@ -84,6 +59,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 20,
-    paddingBottom: 20
-  }
+    paddingBottom: 20,
+  },
 });

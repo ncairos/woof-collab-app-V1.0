@@ -9,7 +9,7 @@ import ChangePhoneForm from "./ChangePhoneForm";
 import Modal from "../Modal";
 
 export default function GeneralOptions(props) {
-  const { userInfo, setReloadData, toastRef } = props;
+  const { userInfo, setReloadData, toastRef, setReload } = props;
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [renderComp, setRenderComp] = useState(null);
 
@@ -21,7 +21,7 @@ export default function GeneralOptions(props) {
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => selectedComp("displayName")
+      onPress: () => selectedComp("displayName"),
     },
     {
       title: "Email",
@@ -30,7 +30,7 @@ export default function GeneralOptions(props) {
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => selectedComp("email")
+      onPress: () => selectedComp("email"),
     },
     {
       title: "Password",
@@ -39,7 +39,7 @@ export default function GeneralOptions(props) {
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => selectedComp("password")
+      onPress: () => selectedComp("password"),
     },
     {
       title: "Phone Number",
@@ -48,7 +48,7 @@ export default function GeneralOptions(props) {
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => selectedComp("phoneNumber")
+      onPress: () => selectedComp("phoneNumber"),
     },
 
     {
@@ -58,7 +58,7 @@ export default function GeneralOptions(props) {
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => console.log("go to appointments")
+      onPress: () => console.log("go to appointments"),
     },
     {
       title: "Messages",
@@ -67,11 +67,11 @@ export default function GeneralOptions(props) {
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => console.log("go to messages")
-    }
+      onPress: () => console.log("go to messages"),
+    },
   ];
 
-  const selectedComp = key => {
+  const selectedComp = (key) => {
     switch (key) {
       case "displayName":
         setRenderComp(
@@ -109,9 +109,9 @@ export default function GeneralOptions(props) {
       case "phoneNumber":
         setRenderComp(
           <ChangePhoneForm
-            phoneNumber={userInfo.phoneNumber}
             setIsVisibleModal={setIsVisibleModal}
             setReloadData={setReloadData}
+            setReload={setReload}
             toastRef={toastRef}
           />
         );
@@ -131,12 +131,12 @@ export default function GeneralOptions(props) {
           leftIcon={{
             type: elm.iconType,
             name: elm.iconNameLeft,
-            color: elm.iconColorLeft
+            color: elm.iconColorLeft,
           }}
           rightIcon={{
             type: elm.iconType,
             name: elm.iconNameRight,
-            color: elm.iconColorRight
+            color: elm.iconColorRight,
           }}
           onPress={elm.onPress}
           containerStyle={styles.menuCont}
@@ -154,6 +154,6 @@ export default function GeneralOptions(props) {
 const styles = StyleSheet.create({
   menuCont: {
     borderBottomWidth: 1,
-    borderBottomColor: "#e3e3e3"
-  }
+    borderBottomColor: "#e3e3e3",
+  },
 });

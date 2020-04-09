@@ -10,40 +10,12 @@ import "firebase/firestore";
 const db = firebase.firestore(firebaseApp);
 
 export default function ChangePhoneNumber(props) {
-  const { phoneNumber, setIsVisibleModal, setReloadData, toastRef } = props;
+  const { setIsVisibleModal, setReloadData, toastRef, setReload } = props;
 
   const [newPhoneNumber, setNewPhoneNumber] = useState(null);
 
   const [error, setError] = useState(null);
   const [loadingIsVisible, setLoadingIsVisible] = useState(false);
-
-  //   const updatePhoneNumber = () => {
-  //     setError(null);
-  //     if (!newPhoneNumber) {
-  //       setError("Phone Number has not been change");
-  //     } else {
-  //       setLoadingIsVisible(true);
-
-  //       const update = {
-  //         phoneNumber: newPhoneNumber
-  //       };
-  //       firebase
-  //         .auth()
-  //         .currentUser.phoneNumber(update)
-  //         .then(() => {
-  //           setLoadingIsVisible(false);
-  //           setReloadData(true);
-  //           toastRef.current.show("Phone Number has been updated");
-  //           setIsVisibleModal(false);
-  //         })
-  //         .catch(() => {
-  //           toastRef.current.show("Error updating, Try Again Later!");
-  //           setLoadingIsVisible(false);
-  //         });
-  //     }
-  //   };
-
-  //--------------------------------------------------------------------------------------//
 
   const addPhoneNumber = () => {
     setError(null);
@@ -52,15 +24,17 @@ export default function ChangePhoneNumber(props) {
     } else {
       setLoadingIsVisible(true);
       const user = firebase.auth().currentUser;
-      let payload = {
+      const payload = {
         userId: user.uid,
         phone: newPhoneNumber,
-        createdAt: new Date()
       };
       db.collection("contacts")
-        .add(payload)
+        .doc(user.uid)
+        .set(payload)
         .then(() => {
           setLoadingIsVisible(false);
+          setReloadData(true);
+          setReload(true);
           toastRef.current.show("Phone Number has been updated");
           setIsVisibleModal(false);
         })
@@ -74,15 +48,16 @@ export default function ChangePhoneNumber(props) {
   return (
     <View>
       <Input
-        placeholder="+00-000-000-000"
+        placeholder="+34 000-000-000"
+        maxLength={9}
         defaultValue={newPhoneNumber && newPhoneNumber}
-        onChange={elm => setNewPhoneNumber(elm.nativeEvent.text)}
+        onChange={(elm) => setNewPhoneNumber(elm.nativeEvent.text)}
         keyboardType="numeric"
         label="Phone Number:"
         rightIcon={{
           type: "material-community",
           name: "phone-classic",
-          color: "#f7882f"
+          color: "#f7882f",
         }}
         errorMessage={error}
       />
@@ -99,9 +74,9 @@ export default function ChangePhoneNumber(props) {
 
 const styles = StyleSheet.create({
   btnCont: {
-    marginTop: 20
+    marginTop: 20,
   },
   btnStyle: {
-    backgroundColor: "#6b7a8f"
-  }
+    backgroundColor: "#6b7a8f",
+  },
 });
