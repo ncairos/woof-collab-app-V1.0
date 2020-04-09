@@ -5,9 +5,9 @@ const HomeScreenStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: () => ({
-      title: "Home"
-    })
-  }
+      title: "Home",
+    }),
+  },
 });
 
 export default HomeScreenStack;

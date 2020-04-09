@@ -37,13 +37,13 @@ function SignupForm(props) {
           await firebase
             .auth()
             .createUserWithEmailAndPassword(email, password)
-            .then(userCredentials => {
+            .then((userCredentials) => {
               userCredentials.user.updateProfile({
-                displayName: displayName
+                displayName: displayName,
               });
               navigation.navigate("Search");
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
               toastRef.current.show(
                 "Error creating the account, Try Again Later!"
@@ -60,7 +60,7 @@ function SignupForm(props) {
       <Input
         placeholder="Email Address"
         containerStyle={styles.input}
-        onChange={elm => setEmail(elm.nativeEvent.text)}
+        onChange={(elm) => setEmail(elm.nativeEvent.text)}
         leftIcon={
           <Icon
             type="material-community"
@@ -74,7 +74,7 @@ function SignupForm(props) {
         containerStyle={styles.input}
         password={true}
         secureTextEntry={hidePassword}
-        onChange={elm => setPassword(elm.nativeEvent.text)}
+        onChange={(elm) => setPassword(elm.nativeEvent.text)}
         leftIcon={
           <Icon
             type="material-community"
@@ -89,7 +89,7 @@ function SignupForm(props) {
         containerStyle={styles.input}
         password={true}
         secureTextEntry={hideRepPassword}
-        onChange={elm => setPasswordRep(elm.nativeEvent.text)}
+        onChange={(elm) => setPasswordRep(elm.nativeEvent.text)}
         leftIcon={
           <Icon
             type="material-community"
@@ -102,7 +102,7 @@ function SignupForm(props) {
       <Input
         placeholder="Full Name"
         containerStyle={styles.input}
-        onChange={elm => setDisplayName(elm.nativeEvent.text)}
+        onChange={(elm) => setDisplayName(elm.nativeEvent.text)}
         leftIcon={
           <Icon
             type="material-community"
@@ -127,20 +127,20 @@ export default withNavigation(SignupForm);
 const styles = StyleSheet.create({
   viewMain: {
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   input: {
-    marginTop: 10
+    marginTop: 10,
   },
   icon: {
     color: "#f7882f",
-    marginRight: 15
+    marginRight: 15,
   },
   btnCont: {
     width: "100%",
-    marginTop: 20
+    marginTop: 20,
   },
   btnStyle: {
-    backgroundColor: "#6b7a8f"
-  }
+    backgroundColor: "#6b7a8f",
+  },
 });

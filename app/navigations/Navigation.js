@@ -20,8 +20,8 @@ const NavigationStack = createBottomTabNavigator(
             size={22}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Home: {
       screen: HomeScreenStack,
@@ -34,8 +34,8 @@ const NavigationStack = createBottomTabNavigator(
             size={22}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Account: {
       screen: AccountScreenStack,
@@ -48,17 +48,17 @@ const NavigationStack = createBottomTabNavigator(
             size={22}
             color={tintColor}
           />
-        )
-      })
-    }
+        ),
+      }),
+    },
   },
   {
     initialRouteName: "Account",
     order: ["Search", "Home", "Account"],
     tabBarOptions: {
       inactiveTintColor: "#6b7a8f",
-      activeTintColor: "#f7882f"
-    }
+      activeTintColor: "#f7882f",
+    },
   }
 );
 

@@ -3,14 +3,13 @@ import { StyleSheet, View, Text } from "react-native";
 import { Avatar } from "react-native-elements";
 import Flag from "react-native-flags";
 
-import { firebaseApp } from "../../utils/Firebase";
-import firebase from "firebase/app";
-import "firebase/firestore";
-const db = firebase.firestore(firebaseApp);
+import * as firebase from "firebase";
+import * as Permissions from "expo-permissions";
+import * as ImagePicker from "expo-image-picker";
 
 export default function UserInfo(props) {
   const {
-    userInfo: { displayName, email, photoUrl },
+    userInfo: { displayName, email, uid, photoURL },
     phone,
     setLoadingIsVisible,
     setReloadData,
@@ -18,25 +17,72 @@ export default function UserInfo(props) {
     toastRef,
   } = props;
 
-  const [loggedUser, setLoggedUser] = useState(false);
-
-  firebase.auth().onAuthStateChanged((user) => {
-    user ? setLoggedUser(true) : setLoggedUser(false);
-  });
-
+  //----------PHONE FORMAT----------//
   let str = phone.toString();
   let chuncks = str.replace(/^(\d{3})(\d{3})/, "$1-$2-");
-  // console.log(chuncks);
+
+  const avatarChange = async () => {
+    const responsePermission = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL
+    );
+    const responseCamera = responsePermission.permissions.cameraRoll.status;
+
+    if (responseCamera === "denied") {
+      toastRef.current.show("You need to give permission");
+    } else {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+      });
+      if (result.cancelled) {
+        toastRef.current.show("You have closed the gallery");
+      } else {
+        uploadImage(result.uri, uid).then(() => {
+          uploadPhotoURL(uid);
+        });
+      }
+    }
+  };
+
+  const uploadImage = async (uri, imgName) => {
+    setTextLoading("Updating avatar");
+    setLoadingIsVisible(true);
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = firebase.storage().ref().child(`avatar/${imgName}`);
+    return ref.put(blob);
+  };
+
+  const uploadPhotoURL = (uid) => {
+    firebase
+      .storage()
+      .ref(`avatar/${uid}`)
+      .getDownloadURL()
+      .then(async (result) => {
+        const update = {
+          photoURL: result,
+        };
+        await firebase.auth().currentUser.updateProfile(update);
+        setReloadData(true);
+        setLoadingIsVisible(false);
+      })
+      .catch(() => {
+        toastRef.current.show("Error retrieving avatar, Try again later!");
+      });
+  };
 
   return (
     <View style={styles.viewMain}>
       <Avatar
         rounded
         showEditButton
+        onEditPress={avatarChange}
         size="large"
         containerStyle={{ marginRight: 25 }}
         source={{
-          uri: "https://api.adorable.io/avatars/285/abott@adorable.png",
+          uri: photoURL
+            ? photoURL
+            : "https://api.adorable.io/avatars/285/abott@adorable.png",
         }}
       />
       <View>
