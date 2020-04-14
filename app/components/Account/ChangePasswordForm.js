@@ -31,7 +31,7 @@ export default function ChangePassword(props) {
       if (newPassword !== repPassword) {
         setError({
           newPassword: "New passwords do not match",
-          repPassword: "New passwords do not match"
+          repPassword: "New passwords do not match",
         });
       } else {
         setLoadingIsVisible(true);
@@ -66,12 +66,12 @@ export default function ChangePassword(props) {
         placeholder="Actual Password"
         password={true}
         secureTextEntry={hidePassword}
-        onChange={elm => setPassword(elm.nativeEvent.text)}
+        onChange={(elm) => setPassword(elm.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
           name: hidePassword ? "lock" : "lock-open",
           color: "#f7882f",
-          onPress: () => setHidePassword(!hidePassword)
+          onPress: () => setHidePassword(!hidePassword),
         }}
         errorMessage={error.password}
       />
@@ -81,12 +81,12 @@ export default function ChangePassword(props) {
         containerStyle={{ marginTop: 10 }}
         password={true}
         secureTextEntry={hideNewPassword}
-        onChange={elm => setNewPassword(elm.nativeEvent.text)}
+        onChange={(elm) => setNewPassword(elm.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
           name: hideNewPassword ? "lock" : "lock-open",
           color: "#f7882f",
-          onPress: () => setHideNewPassword(!hideNewPassword)
+          onPress: () => setHideNewPassword(!hideNewPassword),
         }}
         errorMessage={error.newPassword}
       />
@@ -96,12 +96,12 @@ export default function ChangePassword(props) {
         containerStyle={{ marginTop: 10 }}
         password={true}
         secureTextEntry={hideRepPassword}
-        onChange={elm => setRepPassword(elm.nativeEvent.text)}
+        onChange={(elm) => setRepPassword(elm.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
           name: hideRepPassword ? "lock" : "lock-open",
           color: "#f7882f",
-          onPress: () => setHideRepPassword(!hideRepPassword)
+          onPress: () => setHideRepPassword(!hideRepPassword),
         }}
         errorMessage={error.repPassword}
       />
@@ -118,9 +118,9 @@ export default function ChangePassword(props) {
 
 const styles = StyleSheet.create({
   btnCont: {
-    marginTop: 20
+    marginTop: 20,
   },
   btnStyle: {
-    backgroundColor: "#6b7a8f"
-  }
+    backgroundColor: "#6b7a8f",
+  },
 });

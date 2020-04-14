@@ -3,7 +3,6 @@ import { StyleSheet, View } from "react-native";
 import { Button } from "react-native-elements";
 import Toast from "react-native-easy-toast";
 
-// import * as firebase from "firebase";
 import Loading from "../../components/Loading";
 import UserInfo from "../../components/Account/UserInfo";
 import GeneralOptions from "../../components/Account/GeneralOptions";

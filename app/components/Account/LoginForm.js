@@ -32,7 +32,7 @@ function LoginForm(props) {
           .auth()
           .signInWithEmailAndPassword(email, password)
           .then(() => {
-            navigation.navigate("Account");
+            navigation.navigate("Home");
           })
           .catch(() => {
             toastRef.current.show("Incorrect email or password");
@@ -47,7 +47,7 @@ function LoginForm(props) {
       <Input
         placeholder="Email Address"
         containerStyle={styles.input}
-        onChange={elm => setEmail(elm.nativeEvent.text)}
+        onChange={(elm) => setEmail(elm.nativeEvent.text)}
         leftIcon={
           <Icon
             type="material-community"
@@ -61,7 +61,7 @@ function LoginForm(props) {
         containerStyle={styles.input}
         password={true}
         secureTextEntry={hidePassword}
-        onChange={elm => setPassword(elm.nativeEvent.text)}
+        onChange={(elm) => setPassword(elm.nativeEvent.text)}
         leftIcon={
           <Icon
             type="material-community"
@@ -87,20 +87,20 @@ export default withNavigation(LoginForm);
 const styles = StyleSheet.create({
   viewMain: {
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   input: {
-    marginTop: 10
+    marginTop: 10,
   },
   icon: {
     color: "#f7882f",
-    marginRight: 15
+    marginRight: 15,
   },
   btnCont: {
     width: "100%",
-    marginTop: 20
+    marginTop: 20,
   },
   btnStyle: {
-    backgroundColor: "#6b7a8f"
-  }
+    backgroundColor: "#6b7a8f",
+  },
 });

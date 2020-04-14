@@ -53,7 +53,7 @@ const NavigationStack = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: "Account",
+    initialRouteName: "Home",
     order: ["Search", "Home", "Account"],
     tabBarOptions: {
       inactiveTintColor: "#6b7a8f",

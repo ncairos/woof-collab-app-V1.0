@@ -18,7 +18,7 @@ export default function ChangeNameForm(props) {
     } else {
       setLoadingIsVisible(true);
       const update = {
-        displayName: newDisplayName
+        displayName: newDisplayName,
       };
       firebase
         .auth()
@@ -26,6 +26,7 @@ export default function ChangeNameForm(props) {
         .then(() => {
           setLoadingIsVisible(false);
           setReloadData(true);
+
           toastRef.current.show("Full Name has been updated");
           setIsVisibleModal(false);
         })
@@ -41,13 +42,13 @@ export default function ChangeNameForm(props) {
       <Input
         placeholder="Full Name"
         defaultValue={displayName && displayName}
-        onChange={elm => setNewDisplayName(elm.nativeEvent.text)}
+        onChange={(elm) => setNewDisplayName(elm.nativeEvent.text)}
         label="Full Name:"
         errorMessage={error}
         rightIcon={{
           type: "material-community",
           name: "account-circle",
-          color: "#f7882f"
+          color: "#f7882f",
         }}
       />
       <Button
@@ -63,9 +64,9 @@ export default function ChangeNameForm(props) {
 
 const styles = StyleSheet.create({
   btnCont: {
-    marginTop: 20
+    marginTop: 20,
   },
   btnStyle: {
-    backgroundColor: "#6b7a8f"
-  }
+    backgroundColor: "#6b7a8f",
+  },
 });

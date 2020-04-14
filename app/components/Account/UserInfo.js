@@ -28,7 +28,7 @@ export default function UserInfo(props) {
     const responseCamera = responsePermission.permissions.cameraRoll.status;
 
     if (responseCamera === "denied") {
-      toastRef.current.show("You need to give permission");
+      toastRef.current.show("You need to grant permission");
     } else {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,

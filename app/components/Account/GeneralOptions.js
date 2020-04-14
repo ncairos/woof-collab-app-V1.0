@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { ListItem } from "react-native-elements";
 
 import ChangeNameForm from "./ChangeNameForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import ChangePasswordForm from "./ChangePasswordForm";
-import ChangePhoneForm from "./ChangePhoneForm";
+import ChangeAccountForm from "./ChangeAccountForm";
 import Modal from "../Modal";
 
 export default function GeneralOptions(props) {
-  const { userInfo, setReloadData, toastRef, setReload } = props;
+  const { userInfo, setReloadData, toastRef } = props;
   const [isVisibleModal, setIsVisibleModal] = useState(false);
   const [renderComp, setRenderComp] = useState(null);
 
@@ -42,32 +42,13 @@ export default function GeneralOptions(props) {
       onPress: () => selectedComp("password"),
     },
     {
-      title: "Phone Number",
-      iconType: "material-community",
-      iconNameLeft: "phone-classic",
+      title: "Account Settings",
+      iconType: "material-icons",
+      iconNameLeft: "settings",
       iconColorLeft: "#f7882f",
       iconNameRight: "chevron-right",
       iconColorRight: "#f7882f",
-      onPress: () => selectedComp("phoneNumber"),
-    },
-
-    {
-      title: "Appointments",
-      iconType: "material-community",
-      iconNameLeft: "calendar",
-      iconColorLeft: "#f7882f",
-      iconNameRight: "chevron-right",
-      iconColorRight: "#f7882f",
-      onPress: () => console.log("go to appointments"),
-    },
-    {
-      title: "Messages",
-      iconType: "material-community",
-      iconNameLeft: "forum",
-      iconColorLeft: "#f7882f",
-      iconNameRight: "chevron-right",
-      iconColorRight: "#f7882f",
-      onPress: () => console.log("go to messages"),
+      onPress: () => selectedComp("accountSetting"),
     },
   ];
 
@@ -106,12 +87,11 @@ export default function GeneralOptions(props) {
         );
         setIsVisibleModal(true);
         break;
-      case "phoneNumber":
+      case "accountSetting":
         setRenderComp(
-          <ChangePhoneForm
+          <ChangeAccountForm
             setIsVisibleModal={setIsVisibleModal}
             setReloadData={setReloadData}
-            setReload={setReload}
             toastRef={toastRef}
           />
         );
@@ -123,7 +103,7 @@ export default function GeneralOptions(props) {
   };
 
   return (
-    <View>
+    <View style={{ marginTop: 20, marginHorizontal: 15 }}>
       {MenuOptions.map((elm, idx) => (
         <ListItem
           key={idx}

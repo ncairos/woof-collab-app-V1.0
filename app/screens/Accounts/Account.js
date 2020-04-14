@@ -10,10 +10,11 @@ import * as firebase from "firebase";
 
 function Account(props) {
   const { navigation } = props;
+
   const [login, setlogin] = useState(null);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged((user) => {
       !user ? setlogin(false) : setlogin(true);
     });
   }, []);
@@ -59,23 +60,23 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 20,
     marginRight: 20,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   btnCont: {
     width: "100%",
-    marginTop: 20
+    marginTop: 20,
   },
   btnStyle: {
-    backgroundColor: "#6b7a8f"
+    backgroundColor: "#6b7a8f",
   },
   logoImg: {
     height: 200,
     width: "100%",
-    marginBottom: 20
+    marginBottom: 20,
   },
   textCenter: {
     textAlign: "center",
     marginTop: 50,
-    fontSize: 16
-  }
+    fontSize: 16,
+  },
 });
