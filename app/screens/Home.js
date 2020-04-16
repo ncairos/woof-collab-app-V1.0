@@ -1,23 +1,24 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Icon } from "react-native-elements";
 import Toast from "react-native-easy-toast";
 
 import { withNavigation } from "react-navigation";
 import Loading from "../components/Loading";
 
+import Account from "../screens/Accounts/Account";
 import ProfileMenu from "../components/ProfileMenu";
 import GeneralOptions from "../components/Account/GeneralOptions";
-import CenterDetails from "../screens/CenterProfile/DetailsCenter";
+import DetailsCenter from "../screens/CenterProfile/DetailsCenter";
+import DogsCenter from "../screens/CenterProfile/DogsCenter";
+import ContactsCenter from "../screens/CenterProfile/ContactsCenter";
 
 import { firebaseApp } from "../utils/Firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
 const db = firebase.firestore(firebaseApp);
 
-function Main(props) {
-  const { navigation } = props;
-
+function Main() {
   const [login, setLogin] = useState(null);
   const [userInfo, setUserInfo] = useState({});
   const [centerInfo, setCenterInfo] = useState({});
@@ -41,7 +42,6 @@ function Main(props) {
     })();
     setReloadData(false);
   }, [reloadData]);
-  [];
 
   const fetchUser = async () => {
     const user = await firebase.auth().currentUser;
@@ -68,13 +68,16 @@ function Main(props) {
         type="material-icons"
         name="settings"
         color="white"
-        size={45}
+        size={30}
         containerStyle={styles.toolIcon}
         underlayColor="transparent"
         onPress={() => {
           renderSettings
             ? setRenderSettings(false)
-            : (setRenderSettings(true), setRenderDetails(false));
+            : (setRenderSettings(true),
+              setRenderDetails(false),
+              setRenderDogs(false),
+              setRenderContacts(false));
         }}
       />
       <ProfileMenu
@@ -95,14 +98,16 @@ function Main(props) {
             toastRef={toastRef}
           />
         )}
-        {renderDetails && <CenterDetails centerInfo={centerInfo} />}
+        {renderDetails && <DetailsCenter centerInfo={centerInfo} />}
+        {renderDogs && (
+          <DogsCenter setReloadData={setReloadData} toastRef={toastRef} />
+        )}
+        {renderContacts && <ContactsCenter centerInfo={centerInfo} />}
       </View>
       <Toast ref={toastRef} position="bottom" opacity={0.5} />
     </View>
   ) : (
-    <View>
-      <Text>NOO TENEMOOS USUARIOO</Text>
-    </View>
+    <Account />
   );
 }
 
@@ -117,10 +122,7 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     shadowColor: "rgba(0, 0, 0, 0.2)",
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
+    shadowOffset: { width: 2, height: 2 },
     shadowRadius: 2,
     shadowOpacity: 1,
   },

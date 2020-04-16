@@ -1,30 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Button, Image } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 
-import Loading from "../../components/Loading";
-import LoggedPage from "./LoggedPage";
-
-import * as firebase from "firebase";
-
 function Account(props) {
   const { navigation } = props;
-
-  const [login, setlogin] = useState(null);
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      !user ? setlogin(false) : setlogin(true);
-    });
-  }, []);
-
-  if (login === null) {
-    return <Loading isVisible={true} text="Loading..." />;
-  }
-  return login ? (
-    <LoggedPage />
-  ) : (
+  return (
     <View style={styles.viewMain}>
       <Image
         source={require("../../../assets/img/dog-collab-logo.png")}

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { ListItem } from "react-native-elements";
+import { ListItem, Button } from "react-native-elements";
 
 import ChangeNameForm from "./ChangeNameForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeAccountForm from "./ChangeAccountForm";
 import Modal from "../Modal";
+
+import * as firebase from "firebase";
 
 export default function GeneralOptions(props) {
   const { userInfo, setReloadData, toastRef } = props;
@@ -122,6 +124,12 @@ export default function GeneralOptions(props) {
           containerStyle={styles.menuCont}
         />
       ))}
+      <Button
+        title="LOGOUT"
+        containerStyle={styles.btnCont}
+        buttonStyle={styles.btnStyle}
+        onPress={() => firebase.auth().signOut()}
+      />
       {renderComp && (
         <Modal isVisible={isVisibleModal} setIsVisible={setIsVisibleModal}>
           {renderComp}
@@ -135,5 +143,12 @@ const styles = StyleSheet.create({
   menuCont: {
     borderBottomWidth: 1,
     borderBottomColor: "#e3e3e3",
+  },
+  btnCont: {
+    width: "100%",
+    marginTop: 20,
+  },
+  btnStyle: {
+    backgroundColor: "#6b7a8f",
   },
 });

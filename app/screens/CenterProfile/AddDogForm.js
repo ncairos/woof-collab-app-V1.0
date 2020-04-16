@@ -11,7 +11,7 @@ import "firebase/firestore";
 const db = firebase.firestore(firebaseApp);
 
 export default function AddDogForm(props) {
-  const { setIsVisibleModal, toastRef } = props;
+  const { setIsVisibleModal, setReloadDog, toastRef } = props;
   const [error, setError] = useState({});
 
   const [loadingIsVisible, setLoadingIsVisible] = useState(false);
@@ -75,6 +75,7 @@ export default function AddDogForm(props) {
           })
           .then(() => {
             setLoadingIsVisible(false);
+            setReloadDog(true);
             toastRef.current.show("Dog has been created");
             setIsVisibleModal(false);
           })

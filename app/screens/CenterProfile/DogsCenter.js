@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
-import { Card, Icon } from "react-native-elements";
+import { StyleSheet, View, FlatList, Text, ScrollView } from "react-native";
+import { Card, Icon, Image } from "react-native-elements";
 import Modal from "../../components/Modal";
 import AddDogForm from "./AddDogForm";
 import DogCard from "../../components/DogCard";
@@ -9,6 +9,16 @@ import { firebaseApp } from "../../utils/Firebase";
 import firebase from "firebase/app";
 import "firebase/firestore";
 const db = firebase.firestore(firebaseApp);
+
+import { YellowBox } from "react-native";
+import _ from "lodash";
+YellowBox.ignoreWarnings(["VirtualizedLists"]);
+const _console = _.clone(console);
+console.warn = (message) => {
+  if (message.indexOf("VirtualizedLists") <= -1) {
+    _console.warn(message);
+  }
+};
 
 export default function DogCenter(props) {
   const { toastRef } = props;
@@ -20,14 +30,16 @@ export default function DogCenter(props) {
 
   useEffect(() => {
     (async () => {
-      const dogArray = [];
       const user = firebase.auth().currentUser.uid;
       db.collection("dogs")
-        .where("center", "==", user)
+        .where("createdBy", "==", user)
         .get()
         .then((response) => {
+          const dogArray = [];
           response.forEach((doc) => {
-            dogArray.push(doc.data());
+            let dogID = doc.data();
+            dogID.id = doc.id;
+            dogArray.push(dogID);
           });
           setDogCatalog(dogArray);
         });
@@ -36,62 +48,58 @@ export default function DogCenter(props) {
   }, [reloadDog]);
 
   return (
-    <Card containerStyle={styles.cardCont}>
-      <View style={styles.addIcon}>
+    <ScrollView>
+      <Card containerStyle={{ paddingVertical: 2, borderRadius: 15 }}>
         <Icon
           type="material-community"
-          name="plus-box"
+          name="plus"
           color="#6b7a8f"
-          size={35}
+          size={20}
           onPress={() => setIsVisibleModal(true)}
         />
-      </View>
-      <DogCard dogCatalog={dogCatalog} />
-      <Modal
-        isVisible={isVisibleModal}
-        setIsVisible={setIsVisibleModal}
-        toastRef={toastRef}
-      >
-        <AddDogForm toastRef={toastRef} setIsVisibleModal={setIsVisibleModal} />
-      </Modal>
-    </Card>
+      </Card>
+      <Card style={{ height: "auto" }} containerStyle={{ borderRadius: 15 }}>
+        {dogCatalog.length == 0 ? (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              source={require("../../../assets/img/dog-collab-logo.png")}
+              style={{ height: 100, width: 100 }}
+              resizeMode="contain"
+            />
+            <Text style={styles.text}>THIS CENTER DOES NOT HAVE DOGS</Text>
+          </View>
+        ) : (
+          <View>
+            <FlatList
+              data={dogCatalog}
+              renderItem={(item) => (
+                <DogCard dogCatalog={item} setReloadDog={setReloadDog} />
+              )}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          </View>
+        )}
+        <Modal
+          isVisible={isVisibleModal}
+          setIsVisible={setIsVisibleModal}
+          toastRef={toastRef}
+        >
+          <AddDogForm
+            toastRef={toastRef}
+            setIsVisibleModal={setIsVisibleModal}
+            setReloadDog={setReloadDog}
+          />
+        </Modal>
+      </Card>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  cardCont: {
-    borderRadius: 10,
-    height: "60%",
-  },
-  viewBox1: {
-    alignContent: "center",
-    justifyContent: "center",
-    padding: 10,
-    height: "auto",
-  },
-  titleText: {
+  text: {
     fontSize: 16,
     fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 10,
     color: "#6b7a8f",
-  },
-  textArea: {
-    fontSize: 16,
-    textAlign: "center",
-    width: "100%",
-  },
-  addIcon: {
-    position: "absolute",
-    right: 0,
-    top: 0,
-    zIndex: 2,
-    shadowColor: "rgba(0, 0, 0, 0.2)",
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowRadius: 2,
-    shadowOpacity: 1,
+    marginTop: 10,
   },
 });

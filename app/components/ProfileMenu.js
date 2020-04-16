@@ -37,6 +37,8 @@ export default function ProfileMenu(props) {
           style={renderDetails ? styles.activeText : styles.disableText}
           onPress={() => {
             setRenderDetails(true);
+            setRenderDogs(false);
+            setRenderContacts(false);
             setRenderSettings(false);
           }}
         >
@@ -48,6 +50,7 @@ export default function ProfileMenu(props) {
             setRenderDetails(false);
             setRenderDogs(true);
             setRenderContacts(false);
+            setRenderSettings(false);
           }}
         >
           CATALOG
@@ -58,6 +61,7 @@ export default function ProfileMenu(props) {
             setRenderDetails(false);
             setRenderDogs(false);
             setRenderContacts(true);
+            setRenderSettings(false);
           }}
         >
           CONTACT
