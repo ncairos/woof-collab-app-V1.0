@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { Icon } from "react-native-elements";
 import Toast from "react-native-easy-toast";
 
@@ -7,11 +7,20 @@ import { withNavigation } from "react-navigation";
 import Loading from "../components/Loading";
 
 import Account from "../screens/Accounts/Account";
-import ProfileMenu from "../components/ProfileMenu";
+import ProfileCard from "../components/ProfileCard";
 import GeneralOptions from "../components/Account/GeneralOptions";
+
+//----------USER STATE----------//
+import UserMenuPrivate from "../screens/UserProfile/UMenuPrivate";
+import DashboardUser from "../screens/UserProfile/DashboardUser";
+import CalendarUser from "../screens/UserProfile/CalendarUser";
+import ChatUser from "../screens/UserProfile/ChatUser";
+
+//----------CENTER STATE----------//
 import DetailsCenter from "../screens/CenterProfile/DetailsCenter";
 import DogsCenter from "../screens/CenterProfile/DogsCenter";
 import ContactsCenter from "../screens/CenterProfile/ContactsCenter";
+import CenterMenuPrivate from "../screens/CenterProfile/CMenuPrivate";
 
 import { firebaseApp } from "../utils/Firebase";
 import firebase from "firebase/app";
@@ -26,6 +35,12 @@ function Main() {
   const [reloadData, setReloadData] = useState(false);
   const [renderSettings, setRenderSettings] = useState(false);
 
+  //----------USER STATE----------//
+  const [renderDash, setRenderDash] = useState();
+  const [renderCalendar, setRenderCalendar] = useState();
+  const [renderChat, setRenderChat] = useState();
+
+  //----------CENTER STATE----------//
   const [renderDetails, setRenderDetails] = useState();
   const [renderDogs, setRenderDogs] = useState();
   const [renderContacts, setRenderContacts] = useState();
@@ -63,7 +78,7 @@ function Main() {
     return <Loading isVisible={true} text="Loading..." />;
   }
   return login ? (
-    <View style={{ flex: 1, flexDirection: "column" }}>
+    <>
       <Icon
         type="material-icons"
         name="settings"
@@ -77,35 +92,57 @@ function Main() {
             : (setRenderSettings(true),
               setRenderDetails(false),
               setRenderDogs(false),
-              setRenderContacts(false));
+              setRenderContacts(false),
+              setRenderDash(false),
+              setRenderCalendar(false),
+              setRenderChat(false));
         }}
       />
-      <ProfileMenu
-        userInfo={userInfo}
-        renderDetails={renderDetails}
-        setRenderDetails={setRenderDetails}
-        renderDogs={renderDogs}
-        setRenderDogs={setRenderDogs}
-        renderContacts={renderContacts}
-        setRenderContacts={setRenderContacts}
-        setRenderSettings={setRenderSettings}
-      />
-      <View>
-        {renderSettings && (
-          <GeneralOptions
-            userInfo={userInfo}
-            setReloadData={setReloadData}
-            toastRef={toastRef}
-          />
-        )}
-        {renderDetails && <DetailsCenter centerInfo={centerInfo} />}
-        {renderDogs && (
-          <DogsCenter setReloadData={setReloadData} toastRef={toastRef} />
-        )}
-        {renderContacts && <ContactsCenter centerInfo={centerInfo} />}
-      </View>
-      <Toast ref={toastRef} position="bottom" opacity={0.5} />
-    </View>
+      <ProfileCard userInfo={userInfo} />
+
+      {/* --------------------USER ACCOUNT-------------------- */}
+      {centerInfo === undefined && (
+        <UserMenuPrivate
+          renderDash={renderDash}
+          setRenderDash={setRenderDash}
+          renderCalendar={renderCalendar}
+          setRenderCalendar={setRenderCalendar}
+          renderChat={renderChat}
+          setRenderChat={setRenderChat}
+          setRenderSettings={setRenderSettings}
+        />
+      )}
+      {renderDash && <DashboardUser />}
+      {renderCalendar && <CalendarUser />}
+      {renderChat && <ChatUser />}
+
+      {/* --------------------CENTER ACCOUNT-------------------- */}
+
+      {centerInfo && (
+        <CenterMenuPrivate
+          renderDetails={renderDetails}
+          setRenderDetails={setRenderDetails}
+          renderDogs={renderDogs}
+          setRenderDogs={setRenderDogs}
+          renderContacts={renderContacts}
+          setRenderContacts={setRenderContacts}
+          setRenderSettings={setRenderSettings}
+        />
+      )}
+      {renderSettings && (
+        <GeneralOptions
+          userInfo={userInfo}
+          setReloadData={setReloadData}
+          toastRef={toastRef}
+        />
+      )}
+      {renderDetails && <DetailsCenter centerInfo={centerInfo} />}
+      {renderDogs && (
+        <DogsCenter setReloadData={setReloadData} toastRef={toastRef} />
+      )}
+      {renderContacts && <ContactsCenter centerInfo={centerInfo} />}
+      <Toast ref={toastRef} position="center" opacity={0.5} />
+    </>
   ) : (
     <Account />
   );
